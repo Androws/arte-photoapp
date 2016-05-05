@@ -11,11 +11,12 @@ import com.arte.photoapp.R;
 import com.arte.photoapp.adapters.PhotoRecyclerViewAdapter;
 import com.arte.photoapp.fragments.PhotoDetailFragment;
 import com.arte.photoapp.model.Photo;
+import com.arte.photoapp.network.GetPhotoListRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhotoListActivity extends AppCompatActivity implements PhotoRecyclerViewAdapter.Events {
+public class PhotoListActivity extends AppCompatActivity implements PhotoRecyclerViewAdapter.Events, GetPhotoListRequest.Callbacks {
 
     private boolean mTwoPane;
     private List<Photo> mPhotoList = new ArrayList<>();
@@ -28,6 +29,12 @@ public class PhotoListActivity extends AppCompatActivity implements PhotoRecycle
         setContentView(R.layout.activity_photo_list);
         setupActivity();
         loadPhotos();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mProgressDialog.dismiss();
     }
 
     @Override
@@ -70,7 +77,20 @@ public class PhotoListActivity extends AppCompatActivity implements PhotoRecycle
 
 
     private void loadPhotos() {
-        // TODO start network request to get photos from API
+        // start network request to get photos from API
+        GetPhotoListRequest request = new GetPhotoListRequest(this, this);
+        request.execute();
     }
 
+    @Override
+    public void onGetPhotoListSuccess(List<Photo> photoList) {
+        mProgressDialog.hide();
+        mPhotoList.addAll(photoList);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onGetPhotoListError() {
+        mProgressDialog.hide();
+    }
 }

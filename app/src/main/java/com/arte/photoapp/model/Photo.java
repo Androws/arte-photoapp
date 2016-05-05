@@ -31,15 +31,16 @@ public class Photo {
     }
 
     public String getUrl() {
-        return url;
-    }
+        return getThumbnailUrl();
+        //return url;
+    } //algo parecido a thumbnail url
 
     public void setUrl(String url) {
         this.url = url;
     }
 
     public String getThumbnailUrl() {
-        return thumbnailUrl;
+        return "https://placeholdit.imgix.net/~text?txtsize=14&bg=" + thumbnailUrl.substring(thumbnailUrl.length() - 6, thumbnailUrl.length()) + "&txt=HELLOWORLD&w=150&h=150";
     }
 
     public void setThumbnailUrl(String thumbnailUrl) {
