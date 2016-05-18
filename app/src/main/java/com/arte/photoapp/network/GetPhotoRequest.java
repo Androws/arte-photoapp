@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 public class GetPhotoRequest {
 
-    private static final String GET_PHOTO_URL_BASE = "http://jsonplaceholder.typicode.com/photos/";
+    private static final String GET_PHOTO_URL_BASE = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=d4a47ff42274335c76b940e3ef520dcd&photo_id=";
 
     public interface Callbacks {
         void onGetPhotoSuccess(Photo photo);
@@ -41,11 +41,15 @@ public class GetPhotoRequest {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            JSONObject photoObject = response.getJSONObject("photo");
+                            Log.i("el json", response.toString());
                             Photo photo = new Photo();
-                            photo.setId("" + response.getInt("id"));
-                            photo.setTitle(response.getString("title"));
-                            photo.setUrl(response.getString("url"));
-                            photo.setThumbnailUrl(response.getString("thumbnailUrl"));
+                            photo.setId(photoObject.getString("id"));
+                            photo.setTitle(photoObject.getJSONObject("title").getString("_content"));
+                            photo.setFarm(photoObject.getInt("farm"));
+                            photo.setSecret(photoObject.getString("secret"));
+                            photo.setServerId(photoObject.getInt("server"));
+                            photo.generateUrls();
                             mCallbacks.onGetPhotoSuccess(photo);
                         } catch (JSONException e) {
                             Log.e(GetPhotoRequest.class.getSimpleName(), "Error deserializando JSON", e);
@@ -63,6 +67,6 @@ public class GetPhotoRequest {
     }
 
     private String getPhotoURL(String id) {
-        return GET_PHOTO_URL_BASE + id;
+        return GET_PHOTO_URL_BASE + id + "&format=json&nojsoncallback=1";
     }
 }

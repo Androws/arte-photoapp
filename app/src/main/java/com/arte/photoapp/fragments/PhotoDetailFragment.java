@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class PhotoDetailFragment extends Fragment implements GetPhotoRequest.Cal
 
         if (getArguments().containsKey(ARG_PHOTO_ID)) {
             String photoId = getArguments().getString(ARG_PHOTO_ID);
+            Log.i("PHOTO ID", photoId);
             GetPhotoRequest request = new GetPhotoRequest(getActivity(), this, photoId);
             request.execute();
             // get photo from API
@@ -77,6 +79,7 @@ public class PhotoDetailFragment extends Fragment implements GetPhotoRequest.Cal
         if (appBarLayout != null) {
             appBarLayout.setTitle(mPhoto.getTitle());
         }
+        Log.i("la fotito", photo.getUrl());
         mImage.setImageUrl(photo.getUrl(), RequestQueueManager.getInstance(activity).getImageLoader());
     }
 
