@@ -20,7 +20,8 @@ import java.util.List;
 
 public class GetPhotoListRequest {
 
-    private static final String PHOTO_LIST_URL = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=d4a47ff42274335c76b940e3ef520dcd&format=json&nojsoncallback=1";
+    private static final String PHOTO_LIST_URL = "https://api.500px.com/v1/photos?feature=popular&sort=created_at&rpp=100&image_size=2&include_store=store_download&include_states=voted&consumer_key=KGdEPGBOvUMRrJOlSkr68BQykfv16G6jFh2jyj5v";
+            //"https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=36e8f057859a172dde7a2cbf29666358&format=json&nojsoncallback=1&auth_token=72157668515663996-775959859698873b&api_sig=95feb23803bdf7c83c1e5d5beebdf872";
             //"https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=d4a47ff42274335c76b940e3ef520dcd&format=json&nojsoncallback=1&auth_token=72157668477107556-2ea9f3789d154150&api_sig=6ec395f0645d09ab4db53dd6e75ad3eb";
 
     public interface Callbacks {
@@ -46,7 +47,7 @@ public class GetPhotoListRequest {
                 List<Photo> photoList = new ArrayList<>();
                 //Log.i("el json", response.getJSONObject("photos").get("photo").toString());
                 try {
-                    JSONArray responsePhotos = (JSONArray) response.getJSONObject("photos").get("photo");
+                    JSONArray responsePhotos = response.getJSONArray("photos");
 
                     for (int i = 0; i < responsePhotos.length(); i++) {
                         Photo photo = new Photo();
@@ -55,13 +56,14 @@ public class GetPhotoListRequest {
                             //Log.i("el json " + i, currentObject.toString());
                             //Log.i("LA ID " + i, "" + currentObject.getString("id"));
                             photo.setId(currentObject.getString("id"));
-                            photo.setTitle(currentObject.getString("title"));
-                            photo.setFarm(currentObject.getInt("farm"));
-                            photo.setSecret(currentObject.getString("secret"));
-                            photo.setServerId(currentObject.getInt("server"));
-                            photo.generateUrls();
+                            photo.setTitle(currentObject.getString("name"));
+                            photo.setThumbnailUrl(currentObject.getString("image_url"));
+                            //photo.setFarm(currentObject.getInt("farm"));
+                            //photo.setSecret(currentObject.getString("secret"));
+                            //photo.setServerId(currentObject.getInt("server"));
+                            //photo.generateUrls();
                             photoList.add(photo);
-                            //Log.i("la foto " + i, photo.getId() + " - " + photo.getThumbnailUrl() + " - " + photo.getUrl());
+                            Log.i("la foto " + i, photo.getId() + " - " + photo.getThumbnailUrl() /*+ " - " + photo.getUrl()*/);
                         } catch (JSONException e) {
                             Log.e(GetPhotoListRequest.class.getSimpleName(), "Error deserializando JSON");
                             mCallbacks.onGetPhotoListError();
@@ -80,40 +82,6 @@ public class GetPhotoListRequest {
                 mCallbacks.onGetPhotoListError();
             }
         });
-
-        /*JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, PHOTO_LIST_URL, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                // transform JSONArray to List<Photo>
-                // call mCallbacks methods
-                List<Photo> photoList = new ArrayList<>();
-
-                for (int i = 0; i < response.length(); i++) {
-                    Photo photo = new Photo();
-                    try {
-                        JSONObject currentObject = response.getJSONObject(i);
-                        Log.i("el json", currentObject.toString());
-                        photo.setId("" + currentObject.getInt("id"));
-                        photo.setTitle(currentObject.getString("title"));
-                        photo.setUrl(currentObject.getString("url"));
-                        photo.setThumbnailUrl(currentObject.getString("thumbnailUrl"));
-                        photoList.add(photo);
-                    } catch (JSONException e) {
-                        Log.e(GetPhotoListRequest.class.getSimpleName(), "Error deserializando JSON");
-                        mCallbacks.onGetPhotoListError();
-                        return;
-                    }
-                }
-
-                mCallbacks.onGetPhotoListSuccess(photoList);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mCallbacks.onGetPhotoListError();
-            }
-        });*/
-
         RequestQueueManager.getInstance(mContext).addToRequestQueue(request);
     }
 }

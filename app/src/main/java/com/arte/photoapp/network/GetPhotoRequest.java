@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 public class GetPhotoRequest {
 
-    private static final String GET_PHOTO_URL_BASE = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=d4a47ff42274335c76b940e3ef520dcd&photo_id=";
+    private static final String GET_PHOTO_URL_BASE = "https://api.500px.com/v1/photos/";
 
     public interface Callbacks {
         void onGetPhotoSuccess(Photo photo);
@@ -36,6 +36,7 @@ public class GetPhotoRequest {
         // do JSONObject volley request
         // transform JSONObject to Photo
         // call mCallbacks methods
+        Log.i("la url", getPhotoURL(mId));
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getPhotoURL(mId), null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -45,11 +46,12 @@ public class GetPhotoRequest {
                             Log.i("el json", response.toString());
                             Photo photo = new Photo();
                             photo.setId(photoObject.getString("id"));
-                            photo.setTitle(photoObject.getJSONObject("title").getString("_content"));
-                            photo.setFarm(photoObject.getInt("farm"));
-                            photo.setSecret(photoObject.getString("secret"));
-                            photo.setServerId(photoObject.getInt("server"));
-                            photo.generateUrls();
+                            photo.setTitle(photoObject.getString("name"));
+                            photo.setUrl(photoObject.getString("image_url"));
+                            //photo.setFarm(photoObject.getInt("farm"));
+                            //photo.setSecret(photoObject.getString("secret"));
+                            //photo.setServerId(photoObject.getInt("server"));
+                            //photo.generateUrls();
                             mCallbacks.onGetPhotoSuccess(photo);
                         } catch (JSONException e) {
                             Log.e(GetPhotoRequest.class.getSimpleName(), "Error deserializando JSON", e);
@@ -67,6 +69,6 @@ public class GetPhotoRequest {
     }
 
     private String getPhotoURL(String id) {
-        return GET_PHOTO_URL_BASE + id + "&format=json&nojsoncallback=1";
+        return GET_PHOTO_URL_BASE + id + "?image_size=600&comments=1&consumer_key=KGdEPGBOvUMRrJOlSkr68BQykfv16G6jFh2jyj5v";
     }
 }
