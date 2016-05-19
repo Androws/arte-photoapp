@@ -1,6 +1,5 @@
 package com.arte.photoapp.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -40,9 +39,6 @@ public class PhotoDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-
-        // TODO mProgressDialog should be hidden when network request finishes
     }
 
     private void setupFragment(Bundle savedInstanceState) {

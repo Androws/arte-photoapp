@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">PhotoApp</string>
-    <string name="title_photo_detail">Photo Detail</string>
-    <string name="photo_list.loading">Cargando fotos...</string>
-    <string name="photo_detail.loading">Cargando foto...</string>
+    <string name="app_name">500px Photos</string>
+    <string name="title_photo_detail">Photo Title</string>
+    <string name="photo_detail.loading">Loading…</string>
 </resources>

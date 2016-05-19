@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">500px Photos</string>
+    <string name="photo_detail.loading">Cargando…</string>
+    <string name="title_photo_detail">Título de la foto</string>
+</resources>

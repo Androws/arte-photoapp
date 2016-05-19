@@ -33,25 +33,16 @@ public class GetPhotoRequest {
     }
 
     public void execute() {
-        // do JSONObject volley request
-        // transform JSONObject to Photo
-        // call mCallbacks methods
-        Log.i("la url", getPhotoURL(mId));
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getPhotoURL(mId), null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject photoObject = response.getJSONObject("photo");
-                            Log.i("el json", response.toString());
                             Photo photo = new Photo();
                             photo.setId(photoObject.getString("id"));
                             photo.setTitle(photoObject.getString("name"));
                             photo.setUrl(photoObject.getString("image_url"));
-                            //photo.setFarm(photoObject.getInt("farm"));
-                            //photo.setSecret(photoObject.getString("secret"));
-                            //photo.setServerId(photoObject.getInt("server"));
-                            //photo.generateUrls();
                             mCallbacks.onGetPhotoSuccess(photo);
                         } catch (JSONException e) {
                             Log.e(GetPhotoRequest.class.getSimpleName(), "Error deserializando JSON", e);

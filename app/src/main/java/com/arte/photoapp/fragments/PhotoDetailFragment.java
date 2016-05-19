@@ -21,7 +21,7 @@ import com.arte.photoapp.model.Photo;
 import com.arte.photoapp.network.GetPhotoRequest;
 import com.arte.photoapp.network.RequestQueueManager;
 
-public class PhotoDetailFragment extends Fragment implements GetPhotoRequest.Callbacks{
+public class PhotoDetailFragment extends Fragment implements GetPhotoRequest.Callbacks {
 
     public static final String ARG_PHOTO_ID = "photo_id";
 
@@ -38,10 +38,8 @@ public class PhotoDetailFragment extends Fragment implements GetPhotoRequest.Cal
 
         if (getArguments().containsKey(ARG_PHOTO_ID)) {
             String photoId = getArguments().getString(ARG_PHOTO_ID);
-            Log.i("PHOTO ID", photoId);
             GetPhotoRequest request = new GetPhotoRequest(getActivity(), this, photoId);
             request.execute();
-            // get photo from API
         }
     }
 
@@ -79,7 +77,6 @@ public class PhotoDetailFragment extends Fragment implements GetPhotoRequest.Cal
         if (appBarLayout != null) {
             appBarLayout.setTitle(mPhoto.getTitle());
         }
-        Log.i("la fotito", photo.getUrl());
         mImage.setImageUrl(photo.getUrl(), RequestQueueManager.getInstance(activity).getImageLoader());
     }
 
